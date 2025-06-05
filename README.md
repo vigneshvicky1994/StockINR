@@ -9,7 +9,7 @@ in a dummy mode for evaluation.
 ## Features
 
 - Dummy broker interface for paper trading with real-time prices
-- Optional Zerodha broker integration if Zerodha credentials are provided
+- Optional real broker stub if `BROKER_API_KEY` is set
 - SQLite database to log all trades
 - LLM-driven decision engine to choose buy/sell/hold actions
 - Automated scheduler that runs during market hours
@@ -31,6 +31,7 @@ pip install -r requirements.txt
 
 Copy `.env.example` to `.env` and fill in your credentials. The key settings ar
 `LLM_PROVIDER` (`openai` or `gemini`) and the matching API key (`OPENAI_API_KEY`
+
 or `GEMINI_API_KEY`). To trade using Zerodha provide `ZERODHA_API_KEY`,
 `ZERODHA_API_SECRET` and `ZERODHA_ACCESS_TOKEN`. After configuring the
 environment, run:

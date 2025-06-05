@@ -81,6 +81,7 @@ def main():
     z_key = os.environ.get("ZERODHA_API_KEY")
     z_secret = os.environ.get("ZERODHA_API_SECRET")
     z_token = os.environ.get("ZERODHA_ACCESS_TOKEN")
+
     config = Config(
         budget=10000.0,
         llm_provider=provider,

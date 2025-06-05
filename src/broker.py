@@ -94,4 +94,3 @@ class ZerodhaBroker(Broker):
     def get_price(self, symbol: str) -> float:
         ltp = self.kite.ltp(f"NSE:{symbol}")
         return float(ltp[f"NSE:{symbol}"]["last_price"])  # type: ignore[index]
-
