@@ -5,6 +5,7 @@ from datetime import datetime, time as dtime, timezone, timedelta
 import time
 
 import schedule
+from dotenv import load_dotenv
 
 from broker import Broker, RealBroker
 from database import TradeDatabase
@@ -60,6 +61,7 @@ class TradingApp:
 
 def main():
     import os
+    load_dotenv()
     provider = os.environ.get("LLM_PROVIDER", "openai")
     if provider.lower() == "gemini":
         api_key = os.environ.get("GEMINI_API_KEY", "")
