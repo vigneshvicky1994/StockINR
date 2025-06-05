@@ -29,10 +29,10 @@ pip install -r requirements.txt
 
 ## Usage
 
-Choose the LLM provider via the `LLM_PROVIDER` environment variable (`openai` or
-`gemini`) and set the corresponding API key (`OPENAI_API_KEY` or
-`GEMINI_API_KEY`). Optionally export `BROKER_API_KEY` to route trades to a real
-broker implementation. Then run:
+Copy `.env.example` to `.env` and fill in your credentials. The key settings ar
+`LLM_PROVIDER` (`openai` or `gemini`) and the matching API key (`OPENAI_API_KEY`
+or `GEMINI_API_KEY`). Optionally set `BROKER_API_KEY` to route trades to a real
+broker. After configuring the environment, run:
 
 ```bash
 python -m src.app
