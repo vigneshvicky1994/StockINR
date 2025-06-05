@@ -31,8 +31,10 @@ pip install -r requirements.txt
 
 Copy `.env.example` to `.env` and fill in your credentials. The key settings ar
 `LLM_PROVIDER` (`openai` or `gemini`) and the matching API key (`OPENAI_API_KEY`
-or `GEMINI_API_KEY`). Optionally set `BROKER_API_KEY` to route trades to a real
-broker. After configuring the environment, run:
+
+or `GEMINI_API_KEY`). To trade using Zerodha provide `ZERODHA_API_KEY`,
+`ZERODHA_API_SECRET` and `ZERODHA_ACCESS_TOKEN`. After configuring the
+environment, run:
 
 ```bash
 python -m src.app

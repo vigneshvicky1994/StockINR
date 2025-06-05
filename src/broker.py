@@ -53,25 +53,44 @@ class Broker:
             return 100.0
 
 
-class RealBroker(Broker):
-    """Placeholder for a real broker implementation.
+class ZerodhaBroker(Broker):
+    """Interact with Zerodha Kite for real trading."""
 
-    In a production setup this would talk to the broker's REST API using the
-    provided API key. Here we simply reuse the dummy logic while signalling
-    that real trades would be executed.
-    """
-
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, api_secret: str, access_token: str):
         super().__init__()
-        self.api_key = api_key
+        try:  # pragma: no cover - optional dependency
+            from kiteconnect import KiteConnect
+        except ImportError as exc:  # pragma: no cover - handle missing pkg
+            raise ImportError("kiteconnect package not installed") from exc
+
+        self.kite = KiteConnect(api_key=api_key)
+        self.kite.set_access_token(access_token)
+        self.api_secret = api_secret
 
     def buy(self, symbol: str, quantity: int, price: float):
-        # TODO: integrate with real broker API
-        print(f"[REAL] Buying {quantity} {symbol} @ {price}")
+        order_id = self.kite.place_order(
+            tradingsymbol=symbol,
+            exchange="NSE",
+            transaction_type="BUY",
+            quantity=quantity,
+            order_type="MARKET",
+            product="MIS",
+        )
+        print(f"[ZERODHA] BUY order {order_id}")
         return super().buy(symbol, quantity, price)
 
     def sell(self, symbol: str, quantity: int, price: float):
-        # TODO: integrate with real broker API
-        print(f"[REAL] Selling {quantity} {symbol} @ {price}")
+        order_id = self.kite.place_order(
+            tradingsymbol=symbol,
+            exchange="NSE",
+            transaction_type="SELL",
+            quantity=quantity,
+            order_type="MARKET",
+            product="MIS",
+        )
+        print(f"[ZERODHA] SELL order {order_id}")
         return super().sell(symbol, quantity, price)
 
+    def get_price(self, symbol: str) -> float:
+        ltp = self.kite.ltp(f"NSE:{symbol}")
+        return float(ltp[f"NSE:{symbol}"]["last_price"])  # type: ignore[index]

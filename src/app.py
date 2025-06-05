@@ -7,7 +7,7 @@ import time
 import schedule
 from dotenv import load_dotenv
 
-from broker import Broker, RealBroker
+from broker import Broker, ZerodhaBroker
 from database import TradeDatabase
 from llm_decision import LLMDecisionMaker
 
@@ -16,15 +16,25 @@ class Config:
     budget: float
     llm_provider: str
     llm_api_key: str
-    broker_api_key: str | None = None
+    zerodha_api_key: str | None = None
+    zerodha_api_secret: str | None = None
+    zerodha_access_token: str | None = None
     interval: int = 60  # seconds between LLM decisions
 
 class TradingApp:
     def __init__(self, config: Config):
         self.config = config
         self.db = TradeDatabase()
-        if config.broker_api_key:
-            self.broker = RealBroker(config.broker_api_key)
+        if (
+            config.zerodha_api_key
+            and config.zerodha_api_secret
+            and config.zerodha_access_token
+        ):
+            self.broker = ZerodhaBroker(
+                config.zerodha_api_key,
+                config.zerodha_api_secret,
+                config.zerodha_access_token,
+            )
         else:
             self.broker = Broker()
         self.broker.set_cash(config.budget)
@@ -68,12 +78,17 @@ def main():
     else:
         api_key = os.environ.get("OPENAI_API_KEY", "")
         provider = "openai"
-    broker_key = os.environ.get("BROKER_API_KEY")
+    z_key = os.environ.get("ZERODHA_API_KEY")
+    z_secret = os.environ.get("ZERODHA_API_SECRET")
+    z_token = os.environ.get("ZERODHA_ACCESS_TOKEN")
+
     config = Config(
         budget=10000.0,
         llm_provider=provider,
         llm_api_key=api_key,
-        broker_api_key=broker_key,
+        zerodha_api_key=z_key,
+        zerodha_api_secret=z_secret,
+        zerodha_access_token=z_token,
     )
     app = TradingApp(config)
     context = "Historical data goes here"
