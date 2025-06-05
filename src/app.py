@@ -7,9 +7,9 @@ import time
 import schedule
 from dotenv import load_dotenv
 
-from broker import Broker, ZerodhaBroker
-from database import TradeDatabase
-from llm_decision import LLMDecisionMaker
+from .broker import Broker, ZerodhaBroker
+from .database import TradeDatabase
+from .llm_decision import LLMDecisionMaker
 
 @dataclass
 class Config:
